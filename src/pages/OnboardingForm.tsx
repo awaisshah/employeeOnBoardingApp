@@ -27,7 +27,7 @@ const steps = [
 ];
 
 const OnboardingForm = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(true);
   const [activeStep, setActiveStep] = useState(0);
   const [formValues, setFormValues] = useState({
     firstName: "",
@@ -136,10 +136,11 @@ const OnboardingForm = () => {
               </Button>
             </Box>
 
-            {isModalOpen && (
+            {formValues.firstName && activeStep === steps.length - 1 && (
               <ConfirmationModal
                 values={formValues}
-                onClose={() => setIsModalOpen(false)}
+                open={isModalOpen}
+                setOpen={setIsModalOpen}
               />
             )}
           </Form>

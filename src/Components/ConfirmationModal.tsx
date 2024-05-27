@@ -7,9 +7,9 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { List, ListItem, ListItemText } from "@mui/material";
 
-export default function ConfirmationModal({ values }: any) {
+export default function ConfirmationModal({ values, open, setOpen }: any) {
   console.log("Confirmation Values: ", values);
-  const [open, setOpen] = React.useState(false);
+  // const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
