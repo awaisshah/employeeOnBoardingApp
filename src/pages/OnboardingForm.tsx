@@ -27,8 +27,19 @@ const steps = [
 ];
 
 const OnboardingForm = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
-  const [formValues, setFormValues] = useState();
+  const [formValues, setFormValues] = useState({
+    firstName: "",
+    lastName: "",
+    photo: null,
+    organization: "",
+    department: "",
+    division: "",
+    giveLogin: false,
+    email: "",
+    dailySpendingLimit: "",
+  });
 
   const handleNext = (values: any) => {
     if (activeStep === steps.length - 1) {
@@ -76,9 +87,18 @@ const OnboardingForm = () => {
           dailySpendingLimit: "",
         }}
         validationSchema={BasicSchema}
-        onSubmit={(values) => handleNext(values)}
+        onSubmit={(values) => {
+          handleNext(values);
+          if (activeStep === steps.length - 1) {
+            // Final submit action here
+            setFormValues(values);
+            console.log("Final Form Values:", values);
+          } else {
+            handleNext(values);
+          }
+        }}
       >
-        {({ values, setFieldValue }) => (
+        {({ values }) => (
           <Form>
             <Stepper activeStep={activeStep}>
               {steps.map((label) => (
@@ -93,13 +113,40 @@ const OnboardingForm = () => {
               {activeStep === 2 && <EmployeeLogin formValues={values} />}
               {activeStep === 3 && <DailySpendingLimit />}
             </Box>
-            <Box>
+            <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
+              {activeStep > 0 && (
+                <Button onClick={handleBack} sx={{ mr: 1 }}>
+                  Back
+                </Button>
+              )}
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  if (activeStep === steps.length - 1) {
+                    setIsModalOpen(true);
+                  }
+                }}
+              >
+                {activeStep === steps.length - 1 ? "Submit" : "Next"}
+              </Button>
+            </Box>
+            {/* <Box>
               {activeStep > 0 && <Button onClick={handleBack}>Back</Button>}
               <Button type="submit">
                 {activeStep === steps.length - 1 ? "Submit" : "Next"}
               </Button>
-            </Box>
-            {formValues && <ConfirmationModal values={formValues} />}
+            </Box> */}
+            {/* {formValues && activeStep === steps.length - 1 && (
+              <ConfirmationModal values={formValues} />
+            )} */}
+            {isModalOpen && (
+              <ConfirmationModal
+                values={formValues}
+                onClose={() => setIsModalOpen(false)}
+              />
+            )}
           </Form>
         )}
       </Formik>

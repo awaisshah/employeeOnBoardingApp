@@ -9,15 +9,27 @@ const BasicDetails = () => (
     }}
   >
     <Field name="firstName">
-      {({ field }: any) => (
-        <TextField {...field} label="First Name" fullWidth />
+      {({ field, meta }: any) => (
+        <TextField
+          {...field}
+          label="First Name"
+          fullWidth
+          error={meta.touched && Boolean(meta.error)}
+          helperText={meta.touched && meta.error ? meta.error : ""}
+        />
       )}
     </Field>
-    <ErrorMessage name="firstName" component="div" />
     <Field name="lastName">
-      {({ field }: any) => <TextField {...field} label="Last Name" fullWidth />}
+      {({ field, meta }: any) => (
+        <TextField
+          {...field}
+          label="Last Name"
+          fullWidth
+          error={meta.touched && Boolean(meta.error)}
+          helperText={meta.touched && meta.error ? meta.error : ""}
+        />
+      )}
     </Field>
-    <ErrorMessage name="lastName" component="div" />
     <Field name="photo">
       {({ field, form }: any) => (
         <input
@@ -30,6 +42,10 @@ const BasicDetails = () => (
         />
       )}
     </Field>
+    <Box sx={{ color: "red", mt: 1 }}>
+      <ErrorMessage name="firstName" component="div" />
+      <ErrorMessage name="lastName" component="div" />
+    </Box>
   </Box>
 );
 

@@ -14,7 +14,9 @@ const DailySpendingLimit = () => (
         />
       )}
     </Field>
-    <ErrorMessage name="dailySpendingLimit" component="div" />
+    <Box sx={{ color: "red", mt: 1 }}>
+      <ErrorMessage name="dailySpendingLimit" component="div" />
+    </Box>
   </Box>
 );
 

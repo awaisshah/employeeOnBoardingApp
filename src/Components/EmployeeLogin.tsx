@@ -20,11 +20,7 @@ const EmployeeLogin = (props: any) => {
           />
         )}
       </Field>
-      {/* {formValues?.giveLogin && (
-        <Field name="email">
-          {({ field }: any) => <TextField {...field} label="Email" fullWidth />}
-        </Field>
-      )} */}
+
       {formValues?.giveLogin && (
         <Field name="email">
           {({ field, meta }: any) => (
@@ -37,7 +33,9 @@ const EmployeeLogin = (props: any) => {
           )}
         </Field>
       )}
-      <ErrorMessage name="email" component="div" />
+      <Box sx={{ color: "red", mt: 1 }}>
+        <ErrorMessage name="email" component="div" />
+      </Box>
     </Box>
   );
 };

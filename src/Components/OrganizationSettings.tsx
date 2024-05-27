@@ -26,20 +26,21 @@ interface IId {
 
 const OrganizationSettings = (props: any) => {
   console.log("Form values : ", props?.formValues);
-  const [organizations, setOrganizations] = useState([]);
-  const [departments, setDepartments] = useState([]);
-  const [divisions, setDivisions] = useState([]);
+  const [organizations, setOrganizations] = useState(
+    props?.formValues?.organizationField || []
+  );
+  console.log("VALUES FROM ORGANIZATION : ", organizations);
+  const [departments, setDepartments] = useState(
+    props?.formValues?.departmentField || []
+  );
+  const [divisions, setDivisions] = useState(
+    props?.formValues?.organizationField || []
+  );
 
   useEffect(() => {
     fetchAllOrganizations().then((data) => {
       console.log("ORganization Data : ", data);
-      const newArr = data?.map((organization: any) => {
-        return {
-          label: organization.organisationName,
-          id: organization.organisationKey,
-        };
-      });
-      console.log("NEW ARR ", newArr);
+
       setOrganizations(
         data?.map((organization: any) => {
           return {
@@ -64,48 +65,47 @@ const OrganizationSettings = (props: any) => {
       }}
     >
       <Field name="organisation">
-        {({ field, form }: any) => (
-          <Autocomplete
-            disablePortal
-            options={organizations}
-            onChange={(_, value: IOrganization | null) => {
-              console.log("VALUE  : ", value, typeof value);
-              form.setFieldValue("organization", value?.label);
-              form.setFieldValue("organizationField", value);
+        {({ field, form }: any) => {
+          console.log("Form : ", form);
+          return (
+            <Autocomplete
+              disablePortal
+              options={organizations}
+              defaultValue={props?.formValues?.organizationField || []}
+              onChange={(_, value: IOrganization | null) => {
+                console.log("VALUE  : ", value, typeof value);
+                form.setFieldValue("organization", value?.label);
+                form.setFieldValue("organizationField", value);
 
-              if (value) {
-                fetchAllDepartments().then((data) => {
-                  console.log("depart Data : ", data);
-                  const newArr = data?.map((depart: any) => {
-                    return {
-                      label: depart.departmentName,
-                      id: depart.departmentKey,
-                    };
+                if (value) {
+                  fetchAllDepartments().then((data) => {
+                    console.log("depart Data : ", data);
+
+                    setDepartments(
+                      data?.map((depart: any) => {
+                        return {
+                          label: depart.departmentName,
+                          id: depart.departmentKey,
+                        };
+                      })
+                    );
                   });
-                  console.log("NEW ARR ", newArr);
-                  setDepartments(
-                    data?.map((depart: any) => {
-                      return {
-                        label: depart.departmentName,
-                        id: depart.departmentKey,
-                      };
-                    })
-                  );
-                });
-              }
-            }}
-            renderInput={(params) => (
-              <TextField {...params} label="Organization" />
-            )}
-          />
-        )}
+                }
+              }}
+              renderInput={(params) => (
+                <TextField {...params} label="Organization" />
+              )}
+            />
+          );
+        }}
       </Field>
-      <ErrorMessage name="organization" component="div" />
       <Field name="department">
         {({ field, form }: any) => (
           <Autocomplete
             disablePortal
             options={departments}
+            defaultValue={props?.formValues?.departmentField || []}
+            readOnly={!organizations}
             onChange={(_, value: IOrganization | null) => {
               console.log("Depart VALUE  : ", value, typeof value);
               console.log("VALUE  : ", value, typeof value);
@@ -115,13 +115,7 @@ const OrganizationSettings = (props: any) => {
               if (value) {
                 fetchAllDivisions().then((data) => {
                   console.log("Division Data : ", data);
-                  const newArr = data?.map((depart: any) => {
-                    return {
-                      label: depart.departmentName,
-                      id: depart.departmentKey,
-                    };
-                  });
-                  console.log("NEW ARR ", newArr);
+
                   setDivisions(
                     data?.map((division: any) => {
                       return {
@@ -139,12 +133,12 @@ const OrganizationSettings = (props: any) => {
           />
         )}
       </Field>
-      <ErrorMessage name="department" component="div" />
       <Field name="division">
         {({ field, form }: any) => (
           <Autocomplete
             disablePortal
             options={divisions}
+            defaultValue={props?.formValues?.divisionField || []}
             onChange={(_, value: IOrganization | null) => {
               console.log("Division VALUE  : ", value, typeof value);
               form.setFieldValue("division", value?.label);
@@ -156,7 +150,13 @@ const OrganizationSettings = (props: any) => {
           />
         )}
       </Field>
-      <ErrorMessage name="division" component="div" />
+      <Box sx={{ color: "red", mt: 1 }}>
+        <ErrorMessage name="organization" component="div" />
+
+        <ErrorMessage name="department" component="div" />
+
+        <ErrorMessage name="division" component="div" />
+      </Box>
     </Box>
   );
 };
