@@ -41,11 +41,14 @@ const OnboardingForm = () => {
     dailySpendingLimit: "",
   });
 
+  console.log("activeStep : ", activeStep);
+
   const handleNext = (values: any) => {
     if (activeStep === steps.length - 1) {
       setFormValues(values);
     } else {
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      setActiveStep(activeStep + 1);
+      //  setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
   };
 
@@ -132,15 +135,7 @@ const OnboardingForm = () => {
                 {activeStep === steps.length - 1 ? "Submit" : "Next"}
               </Button>
             </Box>
-            {/* <Box>
-              {activeStep > 0 && <Button onClick={handleBack}>Back</Button>}
-              <Button type="submit">
-                {activeStep === steps.length - 1 ? "Submit" : "Next"}
-              </Button>
-            </Box> */}
-            {/* {formValues && activeStep === steps.length - 1 && (
-              <ConfirmationModal values={formValues} />
-            )} */}
+
             {isModalOpen && (
               <ConfirmationModal
                 values={formValues}

@@ -8,7 +8,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { List, ListItem, ListItemText } from "@mui/material";
 
 export default function ConfirmationModal({ values }: any) {
-  console.log("Values  Lg: ", values);
+  console.log("Confirmation Values: ", values);
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -55,19 +55,19 @@ export default function ConfirmationModal({ values }: any) {
               <ListItem>
                 <ListItemText
                   primary="Organization"
-                  secondary={values.organization.label}
+                  secondary={values.organizationField.label}
                 />
               </ListItem>
               <ListItem>
                 <ListItemText
                   primary="Department"
-                  secondary={values.department.label}
+                  secondary={values.departmentField.label}
                 />
               </ListItem>
               <ListItem>
                 <ListItemText
                   primary="Division"
-                  secondary={values.division.label}
+                  secondary={values.divisionField.label}
                 />
               </ListItem>
               <ListItem>
